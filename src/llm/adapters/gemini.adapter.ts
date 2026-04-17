@@ -3,7 +3,7 @@ import { LlmInterface } from '../llm.interface';
 import { UniversalMessage } from '../universal-message.type';
 import { VAN_TAX_IDENTITY } from '../constants/Identidad';
 
-export default class GeminiAdapter implements LlmInterface {
+export class GeminiAdapter implements LlmInterface {
   private geminiModel: GoogleGenerativeAI;
 
   constructor() {
