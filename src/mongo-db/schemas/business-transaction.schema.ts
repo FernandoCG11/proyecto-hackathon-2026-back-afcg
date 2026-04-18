@@ -12,8 +12,9 @@ export class BusinessTransaction {
     @Prop()
     concept: string;
 
-    @Prop({ type: Number, required: true })
-    amount: number;
+    @Prop({ type: Types.Decimal128, required: true })
+    amount: Types.Decimal128;
+
 
     @Prop({ enum: PaymentMethod, required: true })
     payment_method: PaymentMethod;
