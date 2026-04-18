@@ -9,6 +9,7 @@ import { TaxProfileModule } from './tax-profile/tax-profile.module';
 import { CommonModule } from './common/common.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformResponseInterceptor } from './common/interceptors/transform-response.interceptor';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [LlmModule,
@@ -16,7 +17,8 @@ import { TransformResponseInterceptor } from './common/interceptors/transform-re
     UserModule,
     TransactionModule,
     TaxProfileModule,
-    CommonModule
+    CommonModule,
+    ReportModule
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_INTERCEPTOR, useClass: TransformResponseInterceptor }],
