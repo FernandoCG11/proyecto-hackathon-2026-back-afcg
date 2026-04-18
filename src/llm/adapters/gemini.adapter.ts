@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, Part } from '@google/generative-ai';
 import { LlmInterface } from '../llm.interface';
 import { UniversalMessage } from '../universal-message.type';
 import { VAN_TAX_IDENTITY } from '../constants/Identidad';
@@ -30,10 +30,24 @@ export class GeminiAdapter implements LlmInterface {
       },
     });
 
-    const geminiMessages = messages.map((msg) => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }],
-    }));
+    const geminiMessages = messages.map((msg) => {
+      const parts: Part[] = [{ text: msg.content }];
+
+      if (msg.images && msg.images.length > 0) {
+        msg.images.forEach((img) => {
+          parts.push({
+            inlineData: {
+              mimeType: img.mimeType,
+              data: img.data,
+            },
+          });
+        });
+      }
+      return {
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.content }],
+      };
+    });
 
     try {
       const result = await model.generateContent({ contents: geminiMessages });
