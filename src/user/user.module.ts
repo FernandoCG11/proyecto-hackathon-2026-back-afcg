@@ -6,11 +6,13 @@ import { User, UserSchema } from 'src/mongo-db/schemas/user.schema';
 import { BcryptService } from 'src/common/providers/bcrypt.service';
 
 @Module({
-  imports: [MongooseModule.forFeature([
-    { name: User.name, schema: UserSchema }
-  ]),
-    BcryptService],
+  imports: [
+
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema }
+    ]),
+  ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, BcryptService],
 })
 export class UserModule { }
