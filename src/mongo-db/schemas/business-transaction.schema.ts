@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { PaymentMethod } from '../enums';
+import { PaymentMethod, TypeBusinessTransaction } from '../enums';
 
 export type BusinessTransactionDocument = HydratedDocument<BusinessTransaction>;
 
@@ -30,6 +30,9 @@ export class BusinessTransaction {
 
     @Prop({ default: false })
     has_invoice: boolean;
+
+    @Prop()
+    type: TypeBusinessTransaction;
 
     @Prop({ default: false })
     is_deductible: boolean;
