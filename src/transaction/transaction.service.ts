@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { BusinessTransaction, BusinessTransactionDocument } from 'src/mongo-db/schemas/business-transaction.schema';
 
 @Injectable()
 export class TransactionService {
-  create(createTransactionDto: CreateTransactionDto) {
-    return 'This action adds a new transaction';
+  constructor(
+    @InjectModel(BusinessTransaction.name)
+    private readonly transactionModel: Model<BusinessTransactionDocument>,
+  ) { }
+
+  async create(data: {
+    userId: string;
+    file: Express.Multer.File;
+    message: string;
+  }) {
+    const { userId, file, message } = data;
+
+    if (!file) {
+      throw new BadRequestException('Image is required');
+    }
+
+    // 🔥 Aquí después irá IA + OCR
+
+    const transaction = await this.transactionModel.create({
+      user_id: new Types.ObjectId(userId),
+      concept: message, // temporal
+      amount: 0, // placeholder
+      payment_method: 'EFECTIVO', // placeholder
+    });
+
+    return {
+      id: transaction._id,
+      fileName: file.originalname,
+      message,
+    };
   }
 
-  findAll() {
-    return `This action returns all transaction`;
+  async findAllByUser(userId: string) {
+    return this.transactionModel.find({
+      user_id: new Types.ObjectId(userId),
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
-  }
+  async findOneByUser(userId: string, transactionId: string) {
+    const transaction = await this.transactionModel.findOne({
+      _id: new Types.ObjectId(transactionId),
+      user_id: new Types.ObjectId(userId),
+    });
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
+    if (!transaction) {
+      throw new NotFoundException('Transaction not found for this user');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+    return transaction;
   }
 }
