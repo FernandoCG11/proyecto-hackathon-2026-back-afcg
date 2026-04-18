@@ -8,7 +8,7 @@ export class GeminiAdapter implements LlmInterface {
   private geminiModel: GoogleGenerativeAI;
 
   constructor() {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = "AIzaSyAqZWdxpqTjhgm2DlH0fqKXeNWhM9R-Mbg";
     if (!apiKey) {
       throw new Error('GEMINI_API_KEY is not set in environment variables.');
     }

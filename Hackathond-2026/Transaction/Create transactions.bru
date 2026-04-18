@@ -5,15 +5,21 @@ meta {
 }
 
 post {
-  url: {{API_URL}}/users/:userId/business-transactions
-  body: none
+  url: {{API_URL}}/users/69e2fdd01bfec7575c4125eb/business-transactions?image
+  body: multipartForm
   auth: inherit
 }
 
-params:path {
-  userId: 
+params:query {
+  image: 
+}
+
+body:multipart-form {
+  image: @file(/home/fernando/Downloads/Untitled Diagram.drawio.png)
+  message: que onda mami
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
