@@ -1,0 +1,21 @@
+meta {
+  name: Get one transactions
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{API_URL}}/users/69e2fdd01bfec7575c4125eb/business-transactions/69e3475cbbc8d8b46354bf3f
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  image: @file(/home/fernando/Downloads/WhatsApp Image 2026-01-14 at 10.50.54(1).jpeg)
+  message: hoal
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
