@@ -10,12 +10,9 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TransactionService } from './transaction.service';
 
-
 @Controller()
 export class TransactionController {
-  constructor(
-    private readonly transactionService: TransactionService,
-  ) { }
+  constructor(private readonly transactionService: TransactionService) {}
 
   @Post('users/:userId/business-transactions')
   @UseInterceptors(FileInterceptor('image'))
@@ -41,9 +38,6 @@ export class TransactionController {
     @Param('userId') userId: string,
     @Param('transactionId') transactionId: string,
   ) {
-    return this.transactionService.findOneByUser(
-      userId,
-      transactionId,
-    );
+    return this.transactionService.findOneByUser(userId, transactionId);
   }
 }

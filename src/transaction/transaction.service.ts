@@ -1,14 +1,21 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { BusinessTransaction, BusinessTransactionDocument } from 'src/mongo-db/schemas/business-transaction.schema';
+import {
+  BusinessTransaction,
+  BusinessTransactionDocument,
+} from 'src/mongo-db/schemas/business-transaction.schema';
 
 @Injectable()
 export class TransactionService {
   constructor(
     @InjectModel(BusinessTransaction.name)
     private readonly transactionModel: Model<BusinessTransactionDocument>,
-  ) { }
+  ) {}
 
   async create(data: {
     userId: string;
