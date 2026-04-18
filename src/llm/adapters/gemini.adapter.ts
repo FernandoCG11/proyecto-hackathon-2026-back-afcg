@@ -45,7 +45,7 @@ export class GeminiAdapter implements LlmInterface {
       }
       return {
         role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.content }],
+        parts: parts,
       };
     });
 
