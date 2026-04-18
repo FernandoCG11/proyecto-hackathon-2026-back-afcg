@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { LlmInterface } from '../llm.interface';
 import { UniversalMessage } from '../universal-message.type';
 import { VAN_TAX_IDENTITY } from '../constants/Identidad';
+import { RESPONSE } from '../constants/response';
 
 export class GeminiAdapter implements LlmInterface {
   private geminiModel: GoogleGenerativeAI;
@@ -23,8 +24,10 @@ export class GeminiAdapter implements LlmInterface {
       model: 'gemini-3-flash-preview',
       systemInstruction: VAN_TAX_IDENTITY,
       generationConfig: {
-        temperature: 0.1, 
-      }
+        temperature: 0.1,
+        responseMimeType: 'application/json',
+        responseSchema: RESPONSE,
+      },
     });
 
     const geminiMessages = messages.map((msg) => ({
