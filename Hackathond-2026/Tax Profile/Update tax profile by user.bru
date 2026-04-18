@@ -1,0 +1,24 @@
+meta {
+  name: Update tax profile by user
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{API_URL}}/users/69e311d4e1bf5a16245d9e19/tax-profile
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "regimen_fiscal": "ACTIVIDAD_PROFESIONAL",
+    "current_salary": 30000
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
