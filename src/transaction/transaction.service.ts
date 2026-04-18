@@ -9,17 +9,19 @@ import {
   BusinessTransaction,
   BusinessTransactionDocument,
 } from 'src/mongo-db/schemas/business-transaction.schema';
+import { LlmService } from '../llm/llm.service';
 
 @Injectable()
 export class TransactionService {
   constructor(
     @InjectModel(BusinessTransaction.name)
     private readonly transactionModel: Model<BusinessTransactionDocument>,
+    private readonly llmService: LlmService,
   ) {}
 
   async create(data: {
     userId: string;
-    file: Express.Multer.File;
+    file?: Express.Multer.File;
     message: string;
   }) {
     const { userId, file, message } = data;
@@ -29,8 +31,13 @@ export class TransactionService {
     }
 
     // 🔥 Aquí después irá IA + OCR
+    const extractedData = await this.llmService.extractTransactionData(
+      message,
+      file,
+    );
 
     const transaction = await this.transactionModel.create({
+      ...extractedData,
       user_id: new Types.ObjectId(userId),
       concept: message, // temporal
       amount: 0, // placeholder
@@ -41,6 +48,7 @@ export class TransactionService {
       id: transaction._id,
       fileName: file.originalname,
       message,
+      extractedData,
     };
   }
 
