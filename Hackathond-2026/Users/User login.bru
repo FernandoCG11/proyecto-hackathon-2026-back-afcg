@@ -1,0 +1,24 @@
+meta {
+  name: User login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_URL}}/users/signup
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "fernaddnddo@test.com",
+    "password": "12345678"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Hackathond-2026",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
