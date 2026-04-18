@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from 'src/mongo-db/schemas/user.schema';
 import { BcryptService } from 'src/common/providers/bcrypt.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @Injectable()
 export class UserService {
@@ -71,6 +72,32 @@ export class UserService {
     ).select('-password');
 
     return { id: updatedUser?._id };
+  }
+
+
+  async login(userLoginDto: UserLoginDto) {
+    const { email, password } = userLoginDto;
+
+    const user = await this.userModel.findOne({ email });
+
+    if (!user) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    const isMatch = await this.bcryptService.checkPassword(
+      password,
+      user.password,
+    );
+
+    if (!isMatch) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    return {
+      id: user._id.toString(),
+      email: user.email,
+      logged: true,
+    };
   }
 
 }

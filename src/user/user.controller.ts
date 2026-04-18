@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @Controller('users')
 export class UserController {
@@ -11,6 +12,11 @@ export class UserController {
   @Post('signup')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Post('login')
+  login(@Body() createUserDto: UserLoginDto) {
+    return this.userService.login(createUserDto);
   }
 
   @Get(':userId')
