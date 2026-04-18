@@ -15,6 +15,12 @@ export class UserService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
+    const existingUser = await this.userModel.findOne({ email: createUserDto.email });
+
+    if (existingUser) {
+      throw new BadRequestException('El email ya está registrado');
+    }
+
     const hashedPassword = await this.bcryptService.encryptPassword(createUserDto.password);
 
     const user = new this.userModel({
@@ -22,13 +28,12 @@ export class UserService {
       password: hashedPassword,
     });
 
-    user.save({});
-    return { statusCode: 201, id: user._id }
+    user.save();
+    return { id: user._id }
   }
 
   async findOne(id: string) {
     const user = await this.userModel.findById(id).select('-password').exec();
     return user;
-    // return this.userModel.findById(id).select('-password').exec();
   }
 }

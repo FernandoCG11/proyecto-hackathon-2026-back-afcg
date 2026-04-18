@@ -41,7 +41,6 @@ export class TaxProfileService {
     });
 
     return {
-      statusCode: 201,
       taxProfileId: taxProfile.id,
       userId: userId,
     };

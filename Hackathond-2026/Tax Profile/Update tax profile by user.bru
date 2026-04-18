@@ -4,7 +4,7 @@ meta {
   seq: 3
 }
 
-post {
+patch {
   url: {{API_URL}}/users/69e311d4e1bf5a16245d9e19/tax-profile
   body: json
   auth: inherit
@@ -12,9 +12,8 @@ post {
 
 body:json {
   {
-    "regimen_fiscal": "RESICO_PERSONAS_FISICAS",
-    "current_salary": 20000,
-    "max_income_allowed": 3500000
+    "regimen_fiscal": "ACTIVIDAD_PROFESIONAL",
+    "current_salary": 30000
   }
   
 }
