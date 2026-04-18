@@ -1,0 +1,25 @@
+meta {
+  name: Update user by id copy
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{API_URL}}/users/69e2fdd01bfec7575c4125eb
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "first_name": "Fernando",
+    "last_name": "Contreras Dev"
+  }
+  
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
