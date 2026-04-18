@@ -1,0 +1,16 @@
+meta {
+  name: Get reports report
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{API_URL}}/users/69e2fdd01bfec7575c4125eb/reports
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

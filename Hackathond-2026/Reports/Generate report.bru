@@ -1,0 +1,16 @@
+meta {
+  name: Generate report
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{API_URL}}/users/69e2fdd01bfec7575c4125eb/reports/generate-monthly
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -22,16 +22,30 @@ export class ReportService {
     const start = new Date(now.getFullYear(), now.getMonth(), 1);
     const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
+    // 1. Obtener transacciones del mes (activas)
     const transactions = await this.transactionModel.find({
       user_id: userObjectId,
       createdAt: {
         $gte: start,
         $lte: end,
       },
+      status: true, // 👈 importante
     });
 
     const transactionIds = transactions.map((t) => t._id);
 
+    // 2. Desactivar transacciones del mes
+    await this.transactionModel.updateMany(
+      {
+        _id: { $in: transactionIds },
+        user_id: userObjectId,
+      },
+      {
+        $set: { status: false },
+      },
+    );
+
+    // 3. Borrar reporte anterior del mes
     await this.reportModel.deleteMany({
       user_id: userObjectId,
       type: ReportType.MENSUAL,
@@ -39,6 +53,7 @@ export class ReportService {
       end_date: end,
     });
 
+    // 4. Calcular totales
     let total_expenses = 0;
     let total_deductible = 0;
     let total_taxable = 0;
@@ -55,6 +70,7 @@ export class ReportService {
       }
     }
 
+    // 5. Crear reporte
     const report = await this.reportModel.create({
       user_id: userObjectId,
       type: ReportType.MENSUAL,
@@ -73,7 +89,7 @@ export class ReportService {
 
     return {
       message: 'Monthly report generated successfully',
-      report,
+      id: report._id,
     };
   }
 
